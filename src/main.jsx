@@ -7,6 +7,6 @@ import './pages/class/style.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Class />
+    <Login />
   </StrictMode>,
 )
