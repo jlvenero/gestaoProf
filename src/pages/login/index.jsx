@@ -7,14 +7,14 @@ function Login() {
         <h1>Portal do Professor</h1>
       </div>
       <form action="">
-        <div className='container'>
+        <div className='container1'>
           <input type='text' placeholder='E-mail' name='Username' required></input>
           <input type='password' placeholder='Senha' name='Password' required></input>
-
-          <span className='sign-in'><a href='#'>Crie sua conta!</a></span>
-
-          <button type='submit'> Entrar </button>
         </div>
+        <div className='container2'>
+          <span className='sign-in'><a href='#'>Crie sua conta!</a></span>
+          <button type='submit'> Entrar </button>
+        </div>        
       </form>
     </div>
   )
