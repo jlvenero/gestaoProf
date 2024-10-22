@@ -1,14 +1,51 @@
-# gestaoProf #
+# class-diary-front
 
-# Front do trabalho da faculdade: #
-Aqui o professor vai poder ter todo o acesso as telas para poder realizar as chamadas para dar presença e poder fazer o calculo de 3 notas.
+Esse projeto esta sendo desenvolvido por Lucas Martins Venero, Gustavo Chaves, Guilherme Melato, Michael Varaldo e Filipe Ourlamunder
 
-# Detalhamento Técnico
-React + Vite
+## Instruções de Instalação
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Siga os passos abaixo para clonar o repositório, instalar as dependências e executar o projeto localmente.
 
-Currently, two official plugins are available:
+### 1. Clonar o Repositório
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Primeiro, clone o repositório do GitHub para o seu ambiente local. Abra o terminal e execute o seguinte comando:
+
+```bash
+git clone https://github.com/jlvenero/gestaoProf
+```
+
+### 2. Instalar Dependências
+
+Depois de clonar o repositório, navegue até a pasta do projeto e instale as dependências utilizando NPM.
+
+### Usando NPM
+
+```bash
+npm install
+```
+
+### 3. Executar o Projeto
+
+Se preferir usar o NPM, você pode configurar o script correspondente no package.json e executar:
+
+```bash
+npm run dev
+```
+
+### Acessar o Projeto
+Depois de executar o comando npm run dev, abra o seu navegador e acesse:
+
+```bash
+http://localhost:5173/
+```
+
+### Contato
+Se você tiver alguma dúvida ou sugestão, sinta-se à vontade para entrar em contato pelo email: gustavojchaves1@gmail.com e lucasmvenero@gmail.com
+
+
+### Detalhamento Técnico
+O front é criado utilizando o framework React + Vite;
+Alguns componentes foram importados da Lib Material-Ui do google;
+A pasta "Pages" é utilizado para separar cada tela da plataforma;
+
+
