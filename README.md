@@ -1,7 +1,9 @@
 # gestaoProf
-Front do trabalho da faculdade
+Front do trabalho da faculdade:
+Aqui o professor vai poder ter todo o acesso as telas para poder realizar as chamadas para dar presença e poder fazer o calculo de 3 notas.
 =======
-# React + Vite
+# Detalhamento Técnico
+## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
