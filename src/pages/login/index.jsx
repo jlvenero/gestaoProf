@@ -1,15 +1,22 @@
-//import { useState } from 'react'
-//import reactLogo from './assets/react.svg'
-//import viteLogo from '../../assets/vite.svg'
 import './style.css'
 
 function Login() {
   return (
-    <>
-      <div>
-        <h1>ola mundo</h1>
+    <div className="split left">
+      <div className="title">
+        <h1>Portal do Professor</h1>
       </div>
-    </>
+      <form action="">
+        <div className='container1'>
+          <input type='text' placeholder='E-mail' name='Username' required></input>
+          <input type='password' placeholder='Senha' name='Password' required></input>
+        </div>
+        <div className='container2'>
+          <span className='sign-in'><a href='#'>Crie sua conta!</a></span>
+          <button type='submit'> Entrar </button>
+        </div>        
+      </form>
+    </div>
   )
 }
 
