@@ -9,7 +9,11 @@ function createData(name, n1, n2, n3, presenca) {
 
 const rows = [
     createData('Lucas', 8, 9, 10, [true, false, true, true]),
-    createData('Maria', 7, 8, 9, [true, true, true, false])
+    createData('Maria', 7, 8, 9, [false, false, false, false]),
+    createData('jose', 7, 8, 9, [false, false, false, false]),
+    createData('joao', 7, 8, 9, [false, false, false, false]),
+    createData('cleiton', 7, 8, 9, [false, false, false, false]),
+    createData('Maria', 7, 8, 9, [false, false, false, false])
 ];
 
 function Class() {
