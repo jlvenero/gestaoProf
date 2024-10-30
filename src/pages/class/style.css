@@ -51,7 +51,27 @@
     justify-content:space-between;
 }
 
-.calendario{
+#data{
   border-color: transparent;
   background-color: transparent;
+  padding: 6px;
+}
+
+
+.custom-input {
+  width: 50px; /* Ajuste a largura desejada */
+  font-size: 10px; /* Ajuste o tamanho da fonte, se necessário */
+}
+
+.custom-input .MuiInputBase-input {
+  text-align: center;
+  padding: 5px 0; /* Ajusta o padding interno */
+}
+
+.custom-input .MuiInput-underline:before {
+  border-bottom: 2px solid gray; /* Borda inferior padrão */
+}
+
+.custom-input .MuiInput-underline:after {
+  border-bottom: 2px solid black; /* Borda inferior ao focar */
 }
