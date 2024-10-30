@@ -1,7 +1,8 @@
 import { Table, TableHead, TableRow, TableCell, TableBody, Checkbox, Button, TextField } from '@mui/material';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import './style.css';
 import { useState } from 'react';
+//import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+//import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 function createData(name, n1, n2, n3, presenca) {
     return { name, n1, n2, n3, presenca, isEditing: false };  // Adicionando estado de edição
@@ -58,8 +59,9 @@ function Class() {
         <>
             <div className="header">
                 <div>
-                    <Button class="calendario" startIcon={<CalendarMonthIcon />}>
-                    </Button>
+                    <input type="date" id="data" name="data">
+                    </input>
+
                 </div>
                 <div className="header-title">
                     <h1>teste</h1>
@@ -90,6 +92,8 @@ function Class() {
                                 <>
                                     <TableCell>
                                         <TextField
+                                            className='custom-input'
+                                            variant="standard"
                                             type="number"
                                             value={row.n1 || ''}
                                             onChange={(e) => handleGradeChange(index, 'n1', e.target.value)}
@@ -98,6 +102,8 @@ function Class() {
                                     </TableCell>
                                     <TableCell>
                                         <TextField
+                                            className='custom-input'
+                                            variant="standard"
                                             type="number"
                                             value={row.n2 || ''}
                                             onChange={(e) => handleGradeChange(index, 'n2', e.target.value)}
@@ -106,6 +112,8 @@ function Class() {
                                     </TableCell>
                                     <TableCell>
                                         <TextField
+                                            className='custom-input'
+                                            variant="standard"
                                             type="number"
                                             value={row.n3 || ''}
                                             onChange={(e) => handleGradeChange(index, 'n3', e.target.value)}
@@ -115,7 +123,7 @@ function Class() {
                                 </>
                             ) : (
                                 <>
-                                    <TableCell align='center'>{row.n1}</TableCell>
+                                    <TableCell align='center' >{row.n1}</TableCell>
                                     <TableCell align='center'>{row.n2}</TableCell>
                                     <TableCell align='center'>{row.n3}</TableCell>
                                 </>
