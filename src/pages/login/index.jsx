@@ -2,7 +2,7 @@ import './style.css'
 
 function Login() {
   return (
-    <div className="split left">
+    <div className="split ">
       <div className="title">
         <h1>Portal do Professor</h1>
       </div>
@@ -12,9 +12,9 @@ function Login() {
           <input type='password' placeholder='Senha' name='Password' required></input>
         </div>
         <div className='container2'>
-          <span className='sign-in'><a href='#'>Crie sua conta!</a></span>
-          <button type='submit'> Entrar </button>
-        </div>        
+          <button className="submit" type=''> Entrar </button>
+          <span className='sign-in'><a href='./signin'>Crie sua conta!</a></span>       
+        </div>
       </form>
     </div>
   )
