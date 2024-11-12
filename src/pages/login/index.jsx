@@ -2,7 +2,7 @@ import './style.css'
 
 function Login() {
   return (
-    <div className="split ">
+    <div className="split">
       <div className="title">
         <h1>Portal do Professor</h1>
       </div>
