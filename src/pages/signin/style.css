@@ -4,6 +4,7 @@
 }
 
 body {
+  background-color: #fafafa;
   min-height: 100vh;
   width: 100vw;
 }
@@ -12,24 +13,19 @@ body {
   height: 100%;
   width: 50%;
   position: fixed;
-  z-index: 1;
+  z-index: 0;
   top: 0;
   overflow-x: hidden;
-  padding-top: 20px;
+  padding-top: 70px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
-}
-
-.left{
-  left: 0;
-  background-color: #152B3C;
+  background-color: #fafafa;
 }
 
 .title{
-  padding-top: 4rem;
-  padding-bottom: 3rem;
+  width: 15%;
+  margin-top: 20px;
   text-align: center;
-  font-size: small;
 }
 
 .title h1{
@@ -37,7 +33,19 @@ body {
 }
 
 .container1 {
+  margin-top: 4.5rem;
   padding: 8px;
+}
+
+input[type=email]{
+  height: 64px;
+  width: 55%;
+  padding: 12px 20px;
+  margin: 8px 22% 25px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 20px;
 }
 
 input[type=text]{
@@ -63,13 +71,16 @@ input[type=password]{
 }
 
 .container2 {
-  padding: 12px;
+  padding: 5px;
+  align-items: center;
 }
 
-button {
-  background-color: rgb(153, 153, 153);
+button.submit {
+  color: white;
+  background-color: black;
   padding: 14px 20px;
-  margin: 10px 18% 20px;
+  margin: 5px auto 5px;
+  display: block; 
   border-radius: 20px;
   cursor: pointer;
   width: 20%;

@@ -23,9 +23,11 @@ body {
 }
 
 .title{
-  margin-top: 5rem;
+  height: 30vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  font-size: small;
 }
 
 .title h1{
@@ -41,7 +43,7 @@ form{
   text-align: center;
 }
 
-input[type=text]{
+input[type=email]{
   height: 64px;
   width: 55%;
   padding: 12px 20px;
