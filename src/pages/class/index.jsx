@@ -1,57 +1,58 @@
 import { Table, TableHead, TableRow, TableCell, TableBody, Checkbox, Button, TextField } from '@mui/material';
 import './style.css';
-import { useState } from 'react';
-//import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-//import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-
-function createData(name, n1, n2, n3, presenca) {
-    return { name, n1, n2, n3, presenca, isEditing: false };  // Adicionando estado de edição
-}
-
-const rows = [
-    createData('Lucas', 8, 9, 10, [true, false, true, true]),
-    createData('Maria', 7, 8, 9, [false, false, false, false]),
-    createData('jose', 7, 8, 9, [false, false, false, false]),
-    createData('joao', 7, 8, 9, [false, false, false, false]),
-    createData('cleiton', 7, 8, 9, [false, false, false, false]),
-    createData('Maria', 7, 8, 9, [false, false, false, false])
-];
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Class() {
-    const [students, setStudents] = useState(rows);
+    const navigate = useNavigate();
+    const [students, setStudents] = useState([]);
 
-    // Função para manipular a mudança nos checkboxes
+    // Função para buscar alunos do backend
+    const fetchStudents = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/api/student');
+            if (!response.ok) {
+                throw new Error(`Erro ao buscar alunos: ${response.statusText}`);
+            }
+            const data = await response.json();
+            setStudents(data); // Atualiza o estado com os alunos retornados
+        } catch (error) {
+            console.error('Erro ao buscar alunos:', error);
+        }
+    };
+
+    // useEffect para carregar os alunos ao montar o componente
+    useEffect(() => {
+        fetchStudents();
+    }, []);
+
+    // Funções existentes para manipulação de dados
     const handleCheckboxChange = (index, checkboxIndex) => {
         const newStudents = [...students];
         newStudents[index].presenca[checkboxIndex] = !newStudents[index].presenca[checkboxIndex];
         setStudents(newStudents);
     };
 
-    // Função para marcar/desmarcar todas as presenças
     const toggleAllPresence = (index, value) => {
         const newStudents = [...students];
         newStudents[index].presenca = newStudents[index].presenca.map(() => value);
         setStudents(newStudents);
     };
 
-    // Função para habilitar o modo de edição de notas
     const toggleEdit = (index) => {
         const newStudents = [...students];
         newStudents[index].isEditing = !newStudents[index].isEditing;
         setStudents(newStudents);
     };
 
-    // Função para manipular a mudança nas notas
     const handleGradeChange = (index, gradeType, value) => {
         const newStudents = [...students];
-        // Se o valor for vazio, define como 0
         newStudents[index][gradeType] = value === '' ? 0 : parseFloat(value);
         setStudents(newStudents);
     };
 
-    // Função para calcular a média considerando 0 quando o campo estiver vazio
     const calculateAverage = (n1, n2, n3) => {
-        const total = (n1 || 0) + (n2 || 0) + (n3 || 0);  // Se estiver vazio, considera 0
+        const total = (n1 || 0) + (n2 || 0) + (n3 || 0);
         return (total / 3).toFixed(2);
     };
 
@@ -59,15 +60,13 @@ function Class() {
         <>
             <div className="header">
                 <div>
-                    <input type="date" id="data" name="data">
-                    </input>
-
+                    <input type="date" id="data" name="data"></input>
                 </div>
                 <div className="header-title">
-                    <h1>teste</h1>
+                    <h1>Lista de Alunos</h1>
                 </div>
                 <div className="header-button">
-                    <button>Sair</button>
+                    <button onClick={() => navigate('/home')}>Sair</button>
                 </div>
             </div>
             <Table>
@@ -86,73 +85,26 @@ function Class() {
                     {students.map((row, index) => (
                         <TableRow key={index}>
                             <TableCell align='center'>{row.name}</TableCell>
-
-                            {/* Colunas de notas (N1, N2, N3) com modo de edição */}
-                            {row.isEditing ? (
-                                <>
-                                    <TableCell>
-                                        <TextField
-                                            className='custom-input'
-                                            variant="standard"
-                                            type="number"
-                                            value={row.n1 || ''}
-                                            onChange={(e) => handleGradeChange(index, 'n1', e.target.value)}
-                                            inputProps={{ min: 0, max: 10 }}
-                                        />
-                                    </TableCell>
-                                    <TableCell>
-                                        <TextField
-                                            className='custom-input'
-                                            variant="standard"
-                                            type="number"
-                                            value={row.n2 || ''}
-                                            onChange={(e) => handleGradeChange(index, 'n2', e.target.value)}
-                                            inputProps={{ min: 0, max: 10 }}
-                                        />
-                                    </TableCell>
-                                    <TableCell>
-                                        <TextField
-                                            className='custom-input'
-                                            variant="standard"
-                                            type="number"
-                                            value={row.n3 || ''}
-                                            onChange={(e) => handleGradeChange(index, 'n3', e.target.value)}
-                                            inputProps={{ min: 0, max: 10 }}
-                                        />
-                                    </TableCell>
-                                </>
-                            ) : (
-                                <>
-                                    <TableCell align='center' >{row.n1}</TableCell>
-                                    <TableCell align='center'>{row.n2}</TableCell>
-                                    <TableCell align='center'>{row.n3}</TableCell>
-                                </>
-                            )}
-
-                            {/* Cálculo da média final */}
+                            <TableCell align='center'>{row.n1 || '-'}</TableCell>
+                            <TableCell align='center'>{row.n2 || '-'}</TableCell>
+                            <TableCell align='center'>{row.n3 || '-'}</TableCell>
                             <TableCell align='center'>{calculateAverage(row.n1, row.n2, row.n3)}</TableCell>
-
-                            {/* Botão para editar notas */}
                             <TableCell align='center'>
                                 <Button id="contained" onClick={() => toggleEdit(index)}>
                                     {row.isEditing ? "Salvar" : "Editar"}
                                 </Button>
                             </TableCell>
-
-                            {/* Checkboxes de presença */}
                             <TableCell align='center'>
-                                {row.presenca.map((checked, checkboxIndex) => (
+                                {row.presenca?.map((checked, checkboxIndex) => (
                                     <Checkbox
                                         key={checkboxIndex}
                                         checked={checked}
                                         onChange={() => handleCheckboxChange(index, checkboxIndex)}
                                     />
                                 ))}
-
-                                {/* Botão para preencher todas as aulas de presença */}
                                 <Button
                                     id="contained"
-                                    onClick={() => toggleAllPresence(index, true)}  // Preenche todas as aulas como "presente"
+                                    onClick={() => toggleAllPresence(index, true)}
                                     style={{ marginLeft: '10px' }}
                                 >
                                     Marcar todas
@@ -163,9 +115,11 @@ function Class() {
                 </TableBody>
             </Table>
             <footer>
-                <div class='footer'>
-                    <Button id='contained'>Cadastrar Aluno</Button>
-                    <Button id='contained'>Salvar</Button>
+                <div className="footer">
+                    <Button id="contained" onClick={() => navigate('/newstudent')}>
+                        Cadastrar Aluno
+                    </Button>
+                    <Button id="contained">Salvar</Button>
                 </div>
             </footer>
         </>
