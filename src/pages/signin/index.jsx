@@ -1,33 +1,45 @@
+import React, { useState } from 'react';
+import axios from 'axios';
 import './style.css'
 
-var check = function() {
-  if (document.getElementById('Password').value == document.getElementById('Password-Confirmation').value) {
-    document.getElementById('Message').innerHTML = ''
-  } else {
-    document.getElementById('Message').style.color = 'red';
-    document.getElementById('Message').style.marginLeft = '35%';
-    document.getElementById('Message').style.fontFamily = 'Poppins';
-    document.getElementById('Message').innerHTML = 'As senhas não coincidem!';
-  }
-}
-
 function SignIn() {
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    axios.post('http://localhost:3000/api/user', {
+      name: name,
+      email: email,
+      password: password
+    }, { withCredentials: true })
+    .then(({ data }) => {
+      alert("Criação de usuário bem-sucedida");
+      window.location.href = "/login";
+    })
+    .catch((err) => {
+      alert("Erro ao fazer login. Verifique suas credenciais.");
+    });
+  }
+
   return (
     <div className="split left">
       <div className="title">
         <h1>Portal do Professor</h1>
       </div>
-      <form action="">
+      <form onSubmit={handleSubmit}>
         <div className='container1'>
-          <input type='text' placeholder='Nome completo' name='Name' required></input>
-          <input type='text' placeholder='E-mail' name='Username' required></input>
-          <input type='password' placeholder='Senha' name='Password' id='Password' required></input>
-          <input type='password' placeholder='Confirme sua senha' name='Password-Confirmation' id='Password-Confirmation' onKeyUp={check} required></input>
+          <input type='text' name='name' placeholder='Nome completo' valeu={name} onChange={(e) => setName(e.target.value)} required />
+          <input type='email' name='email' placeholder='E-mail' valeu={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input type='password' placeholder='Senha' name='password' id='password' valeu={password} onChange={(e) => setPassword(e.target.value)} required />
           <span id='Message' name='Message'></span>
         </div>
         <div className='container2'>
-          <span className='sign-in'><a href='../index.jsx'>Já tem uma conta?</a></span>
-          <button type='submit'> Criar conta </button>
+          <button className='submit' type='submit'> Criar conta </button>
+          <span className='sign-in'><a href='../login'>Já tem uma conta?</a></span>
         </div>
       </form>
     </div>
