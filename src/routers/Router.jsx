@@ -4,6 +4,7 @@ import Login  from "../pages/login";
 import SignIn  from "../pages/signin";
 import NewStudent from "../pages/new_student";
 import Home from "../pages/home";
+import NewHome from "../pages/home_new";
 
 const AppRouter = () => {
   return (
@@ -12,8 +13,9 @@ const AppRouter = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/classroom" element={<Class />} />
+        <Route path="/classroom/:id" element={<Class />} />
         <Route path="/newstudent" element={<NewStudent />} />
+        <Route path="/newHome" element={<NewHome />} />
       </Routes>
     </Router>
   );
