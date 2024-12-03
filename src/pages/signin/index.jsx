@@ -32,8 +32,8 @@ function SignIn() {
       </div>
       <form onSubmit={handleSubmit}>
         <div className='container1'>
-          <input type='text' name='name' placeholder='Nome completo' valeu={name} onChange={(e) => setName(e.target.value)} required />
           <input type='email' name='email' placeholder='E-mail' valeu={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input type='text' name='name' placeholder='Nome completo' valeu={name} onChange={(e) => setName(e.target.value)} required />
           <input type='password' placeholder='Senha' name='password' id='password' valeu={password} onChange={(e) => setPassword(e.target.value)} required />
           <span id='Message' name='Message'></span>
         </div>

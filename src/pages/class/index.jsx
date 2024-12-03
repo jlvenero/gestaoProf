@@ -6,12 +6,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 function Class() {
     const { id } = useParams(); // Pega o ID da turma da URL
     const [students, setStudents] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Definir data padrão (hoje)
     const navigate = useNavigate();
 
-    // Função para buscar alunos da turma
-    const fetchStudents = async () => {
+    // Função para buscar alunos da turma com a data
+    const fetchStudents = async (date) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/student?roomId=${id}`);
+            const response = await fetch(`http://localhost:3000/api/student?roomId=${id}&date=${date + "T00:00:00.000Z"}`);
             if (!response.ok) {
                 throw new Error(`Erro ao buscar alunos: ${response.statusText}`);
             }
@@ -22,26 +23,127 @@ function Class() {
         }
     };
 
-    // useEffect para carregar os alunos ao montar o componente
-    useEffect(() => {
-        fetchStudents();
-    }, [id]); // Quando o ID da turma mudar, refaz a requisição
+    const updateAttendance = async (callStudentId, studentId, present, date) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/call_student/${callStudentId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    student_id: studentId,
+                    date: date + "T00:00:00.000Z",
+                    present: present,
+                }),
+            });
 
-    // Função de edição para alternar entre os modos
+            if (!response.ok) {
+                throw new Error(`Erro ao atualizar presença: ${response.statusText}`);
+            }
+
+            console.log(`Presença do aluno ${studentId} atualizada para ${present ? 'presente' : 'ausente'}`);
+        } catch (error) {
+            console.error('Erro ao atualizar presença:', error);
+        }
+
+    }
+
+    // Função para atualizar a presença do aluno
+    const createAttendance = async (studentId, present, date) => {
+        try {
+            const response = await fetch('http://localhost:3000/api/call_student', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    student_id: studentId,
+                    date: date + "T00:00:00.000Z",
+                    present: present,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erro ao atualizar presença: ${response.statusText}`);
+            }
+
+            console.log(`Presença do aluno ${studentId} atualizada para ${present ? 'presente' : 'ausente'}`);
+        } catch (error) {
+            console.error('Erro ao atualizar presença:', error);
+        }
+    };
+
+    // Função que executa a busca de alunos toda vez que a data mudar
+    useEffect(() => {
+        fetchStudents(selectedDate);
+    }, [selectedDate, id]); // Quando o ID da turma ou a data mudarem, refaz a requisição
     const toggleEdit = (index) => {
         const newStudents = [...students];
         newStudents[index].isEditing = !newStudents[index].isEditing;
         setStudents(newStudents);
     };
 
-    // Função para manipular o campo de notas editado
+    const toggleEditRequest = async (index, student) => {
+        console.log('toggleEditRequest', student)
+        try {
+            const response = await fetch(`http://localhost:3000/api/student/${student?.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    n1: student.n1,
+                    n2: student.n2,
+                    n3: student.n3,
+                    name: student.name,
+                    room_id: student.room_id,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erro ao atualizar presença: ${response.statusText}`);
+            }
+
+            fetchStudents(selectedDate);
+        } catch (error) {
+            console.error('Erro ao atualizar presença:', error);
+        }
+        
+        
+    }
+    
+    // Função para manipular a mudança de presença via checkbox
+    const handleCheckboxChange = async (index) => {
+        const newStudents = [...students];
+        const student = newStudents[index];
+        console.log(!student?.calls[0]?.present);
+        const newPresentStatus = !student?.calls[0]?.present; // Alterna o status de presença
+
+      //  student.present = newPresentStatus;
+        //setStudents(newStudents);
+
+        // Enviar requisição para atualizar a presença no backend
+        if(student?.calls[0]?.id){
+            await updateAttendance(student?.calls[0]?.id, student.id, newPresentStatus, selectedDate);
+
+        } else {
+            await createAttendance(student.id, newPresentStatus, selectedDate);
+        }
+
+        fetchStudents(selectedDate);
+    };
+
+    // Função para manipular a mudança de data
+    const handleDateChange = (event) => {
+        setSelectedDate(event.target.value);
+    };
     const handleGradeChange = (index, gradeType, value) => {
         // Garantir que o valor seja um número válido entre 0 e 10
         const validValue = Math.min(Math.max(parseFloat(value) || 0, 0), 10);
         const newStudents = [...students];
         newStudents[index][gradeType] = validValue;
         setStudents(newStudents);
-    };
+    }
 
     // Função para calcular a média
     const calculateAverage = (n1, n2, n3) => {
@@ -51,8 +153,6 @@ function Class() {
 
         const total = validN1 + validN2 + validN3;
         const average = total / 3;
-
-        // Garantir que a média não ultrapasse o intervalo de 0 a 10
         return Math.min(Math.max(average, 0), 10).toFixed(2); // Limitar entre 0 e 10
     };
 
@@ -60,7 +160,13 @@ function Class() {
         <>
             <div className="header">
                 <div>
-                    <input type="date" id="data" name="data"></input>
+                    <input 
+                        type="date" 
+                        id="data" 
+                        name="data" 
+                        value={selectedDate} 
+                        onChange={handleDateChange}
+                    />
                 </div>
                 <div className="header-title">
                     <h1>Lista de Alunos da Turma {id}</h1>
@@ -128,24 +234,16 @@ function Class() {
                             <TableCell align='center'>{calculateAverage(row.n1, row.n2, row.n3)}</TableCell>
 
                             <TableCell align='center'>
-                                <Button onClick={() => toggleEdit(index)}>
+                                <Button onClick={() => row.isEditing ? toggleEditRequest(index, row) : toggleEdit(index)}>
                                     {row.isEditing ? "Salvar" : "Editar"}
                                 </Button>
                             </TableCell>
+
                             <TableCell align='center'>
-                                {row.presenca?.map((checked, checkboxIndex) => (
-                                    <Checkbox
-                                        key={checkboxIndex}
-                                        checked={checked}
-                                        onChange={() => handleCheckboxChange(index, checkboxIndex)}
-                                    />
-                                ))}
-                                <Button
-                                    onClick={() => toggleAllPresence(index, true)}
-                                    style={{ marginLeft: '10px' }}
-                                >
-                                    Marcar todas
-                                </Button>
+                                <Checkbox
+                                    checked={row?.calls[0]?.present || false}
+                                    onChange={() => handleCheckboxChange(index)}
+                                />
                             </TableCell>
                         </TableRow>
                     ))}
